@@ -6,6 +6,7 @@ export default NextAuth({
   session: {
     strategy: 'jwt',
   },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_OAUTH_CLIENT_KEY,
