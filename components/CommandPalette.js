@@ -4,7 +4,6 @@ import { HiSearch } from 'react-icons/hi'
 import { useRouter } from 'next/router'
 import { FiCommand } from 'react-icons/fi'
 import { motion } from 'framer-motion'
-import useSound from 'use-sound'
 
 export default function CommandPalette({ navigation }) {
   const router = useRouter()
@@ -26,8 +25,6 @@ export default function CommandPalette({ navigation }) {
     setIsOpen(!isOpen)
   }
 
-  const [ThemeSound] = useSound('/static/sounds/open.mp3')
-
   const filterednavigation = query
     ? navigation.pages.filter((page) => page.name.toLowerCase().includes(query.toLocaleLowerCase()))
     : navigation.pages
@@ -43,7 +40,6 @@ export default function CommandPalette({ navigation }) {
         transition={{ duration: 0.1, ease: 'easeIn' }}
         onClick={() => {
           toggleIcon()
-          ThemeSound()
         }}
       >
         <FiCommand />

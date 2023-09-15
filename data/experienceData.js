@@ -1,29 +1,35 @@
 const experienceData = [
   {
-    title: 'Data Engineering Intern',
-    company: 'Accenture',
-    location: 'Ahmedabad, India',
-    range: 'January 2022 - May 2022',
-    url: 'https://www.accenture.com/gr-en/about/consulting-index',
+    title: 'Productivity Applications Builder Solutions Architect',
+    company: 'AWS',
+    location: 'Seattle, WA',
+    range: 'July 2021 - March 2023',
+    url: 'https://aws.amazon.com/',
     text1:
-      'Helped with the digital transformation of BOAT by working on their platform called ByteETL.',
+      'Designed and developed open-source library providing Amazon Connect Step-By-Step Guides users with 5 reusable modules and 5 deployable examples to get started using the new features.',
     text2:
-      'Built the encryption component for the platform using Scala and Spark which included 2 encoding functionalities : ENCRYPT and HASH.',
+      'Developed and operated a new feature demo used by ~200 AWS SAs during external presentations.',
     text3:
-      'Created JSON wrappers for the encryption components and automated and triggered the pipelines to run at specific intervals using CronJob.',
+      'Documented and wrote set of best practices for using Amazon Connect Step-By-Step Guides AWS blog post.',
+    text4:
+      'Served as first internal security guardian for my organization (~200 people) to validate and improve security posture of publicly shared content.',
+    text5:
+      'Performed 5 content security reviews, created internal security guidance wiki, and offered ad-hoc feedback and secure design sessions to over 50 SAs.',
   },
   {
-    title: 'Software Engineer Analytics',
-    company: 'HOPS Healthcare',
-    location: 'Ahmedabad, India',
-    range: 'March 2021 - June 2021',
-    url: 'https://hops.healthcare/',
-    text1:
-      'Guided by Mr. Vivek Patel, to create a pipeline that extracts essential information from informal conversations.',
-    text2:
-      'Worked on creating a web app for their healthcare system for doctors to analyze and save reports.',
+    title: 'B.A. in Computer Science and Psychology',
+    company: 'Boston College',
+    location: 'Boston, MA',
+    range: 'September 2017 - May 2021',
+    url: 'https://www.bc.edu/',
+    text1: 'Cumulative GPA: 3.90',
+    text2: 'Phi Beta Kappa',
     text3:
-      'Developed functions for automatically extracting important elements from reports using BioBERT and Regex.',
+      'Gabelli Presidential Scholar: Only merit based scholarship program at Boston College offered to 15 students per year emphasizing leadership, social justice, and international engagement',
+    text4:
+      'Dean’s Scholar in Psychology: Award given to top 5% of Juniors excelling in their field of study',
+    text5:
+      'Relevant coursework: Machine Learning, Cognitive and Neural Bases of Person Knowledge (applied ML), Principles of Programing Languages',
   },
 ]
 

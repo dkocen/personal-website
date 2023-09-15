@@ -3,14 +3,12 @@ import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import { BlogSEO } from '@/components/SEO'
 import Image from '@/components/Image'
-import ViewCounter from '@/components/ViewCounter'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import {
   FacebookShareButton,
-  TwitterShareButton,
   EmailShareButton,
   LinkedinShareButton,
   RedditShareButton,
@@ -61,11 +59,6 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 <span className="flex items-center gap-1.5">
                   <HiOutlineClock className="h-5 w-5" />
                   {readingTime.text}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <HiOutlineEye className="h-5 w-5" />
-                  <ViewCounter className="ml-0" slug={slug} blogPage={true} />
-                  <div className="-ml-0.5">Views</div>
                 </span>
               </div>
             </div>
@@ -128,19 +121,6 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
               <div className="grid place-items-center pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
                 <div className="flex items-center space-x-4">
-                  <TwitterShareButton
-                    url={postUrl}
-                    title={title}
-                    via={siteMetadata.socialAccount.twitter}
-                    className="flex items-center overflow-hidden rounded-full !bg-[#1da1f2] hover:scale-110"
-                  >
-                    <SocialIcon
-                      network="twitter"
-                      style={{ height: 35, width: 35 }}
-                      fgColor="#fff"
-                      bgColor="#1da1f2"
-                    />
-                  </TwitterShareButton>
                   <FacebookShareButton
                     url={postUrl}
                     quote={title}

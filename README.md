@@ -3,7 +3,7 @@
 </div>
 
 <h1 align="center">
-  Personal Blog - <em>Mere Musings</em>
+  Personal Website Git Repository
 </h1>
 
 <p align="center">

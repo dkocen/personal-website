@@ -3,9 +3,6 @@ import { PageSEO } from '@/components/SEO'
 import { dayjs } from '@/components/DayJS'
 import { useEffect, useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
-import { getCurrentlyReading } from '@/lib/goodreads'
-import fetcher from 'lib/fetcher'
-import useSWR from 'swr'
 import { FaCloudShowersHeavy } from 'react-icons/fa'
 import {
   BsCloudDrizzleFill,
@@ -23,24 +20,22 @@ import {
 
 export const getServerSideProps = async () => {
   const response = await fetch(
-    'https://api.openweathermap.org/data/2.5/weather?lat=23.014770&lon=72.526330&appid=1b3c10c18e894eaf1fd63eedde53fa54&units=metric'
+    `https://api.openweathermap.org/data/3.0/onecall?lat=47.608013&lon=-122.335167&appid=a8314ca109070c7b4fccc0bfc2ecad90`
   )
   const data = await response.json()
 
-  const currentlyReading = await getCurrentlyReading({ limit: 1 })
-
   return {
-    props: { currentlyReading, data },
+    props: { data },
   }
 }
 
 export default function Now(currentlyReading) {
-  const { data } = useSWR('/api/now-playing', fetcher)
-  let currentlyReadingData = currentlyReading['currentlyReading']
   let weatherData = currentlyReading['data']
-  const { temp: temperature } = weatherData.main
-  const { icon: weatherIcon, description: weatherDescription } = weatherData.weather[0]
-
+  const { temp: temperature } = 1234
+  const { icon: weatherIcon, description: weatherDescription } = {
+    weatherIcon: '_01d',
+    weatherDescription: 'Need to implement',
+  }
   const icons = {
     _01d: <BsSunFill className="mb-0.5 inline h-3 w-3 hover:animate-spin" />,
     _01n: <BsMoonFill className="mb-0.5 inline h-3 w-3 hover:animate-spin" />,
@@ -65,9 +60,6 @@ export default function Now(currentlyReading) {
   var year = new Date().getFullYear()
   var month = new Date().getMonth()
   var date = new Date().getDate()
-  var hour = new Date().getHours()
-  var minute = new Date().getMinutes()
-  var second = new Date().getSeconds()
   const now = () => dayjs().tz()
   const format = 'hhA'
   const [TodayDate, setDate] = useState(now())
@@ -77,34 +69,33 @@ export default function Now(currentlyReading) {
     return () => clearInterval(timer)
   }, [])
 
-  var ParthBirthDate = '2000-04-16'
-  var birthDate = new Date(ParthBirthDate)
+  var birthDate = new Date('1999-3-21')
 
-  var ParthAge = year - birthDate.getFullYear()
+  var FormattedYears = year - birthDate.getFullYear()
 
-  var ParthMonth = 0
-  if (month >= birthDate.getMonth()) ParthMonth = month - birthDate.getMonth()
+  var FormattedMonth = 0
+  if (month >= birthDate.getMonth()) FormattedMonth = month - birthDate.getMonth()
   else {
-    ParthAge--
-    ParthMonth = 12 + month - birthDate.getMonth()
+    FormattedYears--
+    FormattedMonth = 12 + month - birthDate.getMonth()
   }
 
-  var ParthDay = 0
-  if (date >= birthDate.getDate()) ParthDay = date - birthDate.getDate()
+  var FormattedDay = 0
+  if (date >= birthDate.getDate()) FormattedDay = date - birthDate.getDate()
   else {
-    ParthMonth--
-    ParthDay = 31 + date - birthDate.getDate()
-    if (ParthMonth < 0) {
-      ParthMonth = 11
-      ParthAge--
+    FormattedMonth--
+    FormattedDay = 31 + date - birthDate.getDate()
+    if (FormattedMonth < 0) {
+      FormattedMonth = 11
+      FormattedYears--
     }
   }
 
   var age = {}
   age = {
-    years: ParthAge,
-    months: ParthMonth,
-    days: ParthDay,
+    years: FormattedYears,
+    months: FormattedMonth,
+    days: FormattedDay,
   }
 
   var ageString = ''
@@ -131,22 +122,16 @@ export default function Now(currentlyReading) {
         url={siteMetadata.url}
       />
       <div>
-        <div className="my-2">
-          <h3>Where am I and what am I doing?</h3>
-          <div className=" mt-4 mb-6 text-xs text-neutral-700 dark:text-neutral-400">
-            This page was automatically updated @ {date}-{month}-{year} {hour}:{minute}:{second}
-          </div>
-        </div>
         {/* Misc */}
         <div>
           <div className="flex justify-between gap-5">
             <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
-              <span className="ml-2 font-semibold">Location:</span> <span>Ahmedabad, India</span>
+              <span className="ml-2 font-semibold">Location:</span> <span>Seattle, WA</span>
               <br />
               <span className="ml-2 font-semibold">Weather:</span>{' '}
               <span>
                 <a
-                  href="https://weather.com/en-GB/weather/today/l/f42d9f8baa19b4d8d5e034449faa703839993366f64551a56a2b530297075dc2"
+                  href={siteMetadata.weather}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline-offset-1 hover:underline"
@@ -161,13 +146,12 @@ export default function Now(currentlyReading) {
             <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
               <span className="ml-2 font-semibold">Reading:</span>{' '}
               <a
-                href={currentlyReadingData[0].url}
+                href="https://www.goodreads.com/book/show/7144.Crime_and_Punishment"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline-offset-1 hover:underline"
               >
-                <span>{currentlyReadingData[0].title}</span> by{' '}
-                <span>{currentlyReadingData[0].author}</span>
+                <span>Crime and Punishment</span> by <span>Fyodor Dostoevsky</span>
               </a>
               <br />
               <span className="ml-2 font-semibold">Age:</span> <span>{ageString}</span>
@@ -177,7 +161,7 @@ export default function Now(currentlyReading) {
           <div className="-my-6 flex justify-between gap-5">
             <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
               <span className="ml-2 font-semibold">Date:</span>{' '}
-              <span>{TodayDate.format('DD/MM/YYYY')}</span>
+              <span>{TodayDate.format('MM/DD/YYYY')}</span>
               <br />
               <span className="ml-2 font-semibold">Time:</span>{' '}
               <span>
@@ -187,23 +171,10 @@ export default function Now(currentlyReading) {
             </div>
 
             <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
-              <span className="ml-2 font-semibold">Listening:</span>{' '}
-              <span>
-                {data?.songUrl ? (
-                  <a
-                    href={data.songUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline-offset-1 hover:underline"
-                  >
-                    <span>{data.title}</span>
-                  </a>
-                ) : (
-                  <span>Not Playing</span>
-                )}
-              </span>
+              <span className="ml-2 font-semibold">Hobbies:</span>{' '}
+              <span>Cello, CrossFit, Snowboarding</span>
               <br />
-              <span className="ml-2 font-semibold">Drinking:</span> <span>Coffee</span>
+              <span className="ml-2 font-semibold">Drinking:</span> <span>Irish Breakfast tea</span>
             </div>
           </div>
         </div>
@@ -213,39 +184,32 @@ export default function Now(currentlyReading) {
         {/* Work */}
         <div className="pb-4">
           <p>
-            I work as a Data Engineer at{' '}
+            I work as a DevSecOps Engineer at{' '}
             <Link
-              href={'https://www.accenture.com/'}
+              href={'https://www.pnnl.gov/'}
               className="special-underline no-underline dark:text-gray-100 hover:dark:text-gray-100"
             >
-              Accenture
+              Pacific Northwest National Lab
             </Link>
             .
           </p>
           <br />
           <p>
-            I work on building pipelines and automating the entire process using Scala and Gcloud.
+            I mostly work in AWS using TypeScript. Also been playing a lot with Kubernetes recently.
           </p>
           <br />
           <p>
-            I have been trying to shift my field from Data Engineering to Data Science. I have been
-            constantly applying for the same as well.
+            I am just starting off at my job at PNNL and also plan on pursuing a Master's in
+            cybersecurity at some point
           </p>
           <br />
           <p>
-            My location preference is Bangalore but I am open to shift to another place for a better
-            opportunity.
-          </p>
-          <br />
-          <p>
-            I'm always trying to learn more, and at the moment I'm trying to follow this{' '}
+            I'm always trying to learn more, and at the moment I'm trying to{' '}
             <Link
-              href={
-                'https://www.youtube.com/watch?v=_u-PaJCpwiU&list=PLu0W_9lII9ai6fAMHp-acBmJONT7Y4BSG'
-              }
+              href={'https://book.realworldhaskell.org/read/'}
               className="special-underline no-underline dark:text-gray-100 hover:dark:text-gray-100"
             >
-              Machine Learning tutorial
+              learn functional programming
             </Link>
             .
           </p>
@@ -257,27 +221,10 @@ export default function Now(currentlyReading) {
         {/* Personal life */}
         <div className="pt-6">
           <p>
-            I've been slowly building this website, trying to share interesting things with anyone
-            who wants to read it.{' '}
-            <Link
-              href={'https://www.swyx.io/learn-in-public'}
-              className="special-underline no-underline dark:text-gray-100 hover:dark:text-gray-100"
-            >
-              This
-            </Link>{' '}
-            article is a great reason to start your blog.
+            I've been wanting to work on being more creative and am using this blog/website as a way
+            to start that. That's why I also play the cello now!
           </p>
           <br />
-          <p>
-            I am also going to start applying for Masters in Data Science in August 2022 for intake
-            of Fall 2023. I hope to get a good university near the West Coast. I'll update this page
-            after I get my admits.
-          </p>
-          <br />
-          <p>
-            I recently started to draft a post about my new Obsidian worklfow, it will be a good
-            one!
-          </p>
         </div>
         <div className="mt-3 text-sm">
           For more examples of folks with /now pages, check out{' '}

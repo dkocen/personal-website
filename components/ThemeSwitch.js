@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { motion } from 'framer-motion'
 import { HiSun, HiMoon } from 'react-icons/hi'
-import useSound from 'use-sound'
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
@@ -10,8 +9,6 @@ const ThemeSwitch = () => {
 
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), [])
-
-  const [ThemeSound] = useSound('/static/sounds/switch-on.mp3')
 
   const ThemeSwitch = () => {
     setTheme(theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark')
@@ -30,7 +27,6 @@ const ThemeSwitch = () => {
         type="button"
         onClick={() => {
           ThemeSwitch()
-          ThemeSound()
         }}
       >
         {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? (
