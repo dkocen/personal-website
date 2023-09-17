@@ -20,7 +20,7 @@ import {
 
 export const getServerSideProps = async () => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/3.0/onecall?lat=47.608013&lon=-122.335167&appid=a8314ca109070c7b4fccc0bfc2ecad90`
+    `https://api.openweathermap.org/data/3.0/onecall?lat=47.6062&lon=-122.3321&units=imperial&appid=${process.env.OPENWEATHER_API_KEY}`
   )
   const data = await response.json()
 
@@ -31,11 +31,8 @@ export const getServerSideProps = async () => {
 
 export default function Now(currentlyReading) {
   let weatherData = currentlyReading['data']
-  const { temp: temperature } = 1234
-  const { icon: weatherIcon, description: weatherDescription } = {
-    weatherIcon: '_01d',
-    weatherDescription: 'Need to implement',
-  }
+  const { temp: temperature } = weatherData.current
+  const { icon: weatherIcon, description: weatherDescription } = weatherData.current.weather[0]
   const icons = {
     _01d: <BsSunFill className="mb-0.5 inline h-3 w-3 hover:animate-spin" />,
     _01n: <BsMoonFill className="mb-0.5 inline h-3 w-3 hover:animate-spin" />,
@@ -124,7 +121,7 @@ export default function Now(currentlyReading) {
       <div>
         {/* Misc */}
         <div>
-          <div className="flex justify-between gap-5">
+          <div className="flex justify-between gap-10">
             <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
               <span className="ml-2 font-semibold">Location:</span> <span>Seattle, WA</span>
               <br />
@@ -136,7 +133,7 @@ export default function Now(currentlyReading) {
                   rel="noopener noreferrer"
                   className="underline-offset-1 hover:underline"
                 >
-                  {icons[`_${weatherIcon}`]} Currently <b>{parseInt(temperature)}°C</b>
+                  {icons[`_${weatherIcon}`]} Currently <b>{parseInt(temperature)}°F</b>
                   {' with '}
                   <span>{weatherDescription}</span>
                 </a>
@@ -144,6 +141,28 @@ export default function Now(currentlyReading) {
             </div>
 
             <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+              <span className="ml-2 font-semibold">Age:</span> <span>{ageString}</span>
+              <br />
+              <span className="ml-2 font-semibold">Pronouns:</span> <span>He/They</span>
+            </div>
+          </div>
+
+          <div className="-my-6 flex justify-between gap-10">
+            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+              <span className="ml-2 font-semibold">Date:</span>{' '}
+              <span>{TodayDate.format('MM/DD/YYYY')}</span>
+              <br />
+              <span className="ml-2 font-semibold">Time:</span>{' '}
+              <span>
+                <BsClock className="mb-0.5 inline h-3 w-3 hover:animate-spin" />{' '}
+                {TodayDate.format('h:mm:ss A z')}
+              </span>
+            </div>
+
+            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+              <span className="ml-2 font-semibold">Hobbies:</span>{' '}
+              <span>Cello, CrossFit, Snowboarding</span>
+              <br />
               <span className="ml-2 font-semibold">Reading:</span>{' '}
               <a
                 href="https://www.goodreads.com/book/show/7144.Crime_and_Punishment"
@@ -154,27 +173,6 @@ export default function Now(currentlyReading) {
                 <span>Crime and Punishment</span> by <span>Fyodor Dostoevsky</span>
               </a>
               <br />
-              <span className="ml-2 font-semibold">Age:</span> <span>{ageString}</span>
-            </div>
-          </div>
-
-          <div className="-my-6 flex justify-between gap-5">
-            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
-              <span className="ml-2 font-semibold">Date:</span>{' '}
-              <span>{TodayDate.format('MM/DD/YYYY')}</span>
-              <br />
-              <span className="ml-2 font-semibold">Time:</span>{' '}
-              <span>
-                <BsClock className="mb-0.5 inline h-3 w-3 hover:animate-spin" />{' '}
-                {TodayDate.format('h:mm:ss A')}
-              </span>
-            </div>
-
-            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
-              <span className="ml-2 font-semibold">Hobbies:</span>{' '}
-              <span>Cello, CrossFit, Snowboarding</span>
-              <br />
-              <span className="ml-2 font-semibold">Drinking:</span> <span>Irish Breakfast tea</span>
             </div>
           </div>
         </div>
@@ -194,22 +192,20 @@ export default function Now(currentlyReading) {
             .
           </p>
           <br />
-          <p>
-            I mostly work in AWS using TypeScript. Also been playing a lot with Kubernetes recently.
-          </p>
+          <p>I mostly use AWS and TypeScript. Also been playing a lot with Kubernetes recently.</p>
           <br />
           <p>
-            I am just starting off at my job at PNNL and also plan on pursuing a Master's in
+            I am just starting off my job at PNNL and also plan on pursuing a Master's in
             cybersecurity at some point
           </p>
           <br />
           <p>
-            I'm always trying to learn more, and at the moment I'm trying to{' '}
+            I'm always trying to learn more. Currently learing to{' '}
             <Link
-              href={'https://book.realworldhaskell.org/read/'}
+              href={'https://www.linuxfromscratch.org/'}
               className="special-underline no-underline dark:text-gray-100 hover:dark:text-gray-100"
             >
-              learn functional programming
+              roll my own Linux distro
             </Link>
             .
           </p>

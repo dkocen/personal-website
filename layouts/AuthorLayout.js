@@ -35,7 +35,7 @@ export default function AuthorLayout({ children, frontMatter }) {
             <Image
               src={avatar}
               alt="avatar"
-              width="192px"
+              width="200px"
               height="192px"
               className="h-48 w-48 rounded-full xl:rounded-full"
               placeholder="blur"

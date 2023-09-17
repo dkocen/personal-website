@@ -1,0 +1,80 @@
+---
+title: Let's Build a Local Cloud
+date: '2023-09-16'
+tags: [cloud, server, raspberry pi, linux]
+draft: false
+summary:
+  I want to build a "local cloud" environment as an excuse to learn more about distributed computing and DevSecOps.
+  This is the introductory post to explaining my idea.
+---
+
+<img
+  className="inline"
+  src="https://lh3.googleusercontent.com/pw/AIL4fc9xEuvtc03T4yFyRPBMmCYDa2oXWbpnKGVXJpb3x__iOiN1FJy1TxcEUJe3BLtu3pPDJwDcqzYW5IPi95qYta5QRVkH8IDCBnNR7VuIr6zBx4--bc9K=w2400"
+  alt="Raspberry Pi server on desk"
+/>
+
+For a technical interview I had to do a crash course on Kubernetes. Beyond basic container usage this was my first deep-dive
+into orchestrating my own microservice workflows rather than just telling \~the cloud\~ to do it. I had way more fun than I probably should have
+[building a baremetals Kubernetes cluster from scratch](https://medium.com/@DrewViles/kubernetes-the-hard-way-on-bare-metal-vms-v1-23-2168f5fe70af) and
+realized I want to do more stuff on physical servers.
+
+Anyways that got me thinking about what the cloud actually is. Having never had to pay for and provision a baremetal server, the main benefit
+it seems to me has always been the quick iterations. Using code I can provision a new bucket to store my files, run a program, and create a
+development pipeline. Then I just upload it to the cloud and my infrastructure is there. I can run another command to destroy all of this and start
+over with the only delay being the time it takes to delete resources.
+
+I think there is value in creating automated tools for provisioning infrastructure but I had a really fun time doing it manually while learning
+Kubernetes. So then obviously the next step is to manually build my own server to automatically provision virtual infrastructure 😜 Basically, a
+local cloud.
+
+## What do you mean by local cloud?
+
+At first this sounds like a contradiction but it is not I swear. By local I mean that everything I build will be running on a machine that I can
+physically touch. All the hardware will be owned by me.
+
+By cloud I am refering to the more vague concept of being able to just "summon infrastructure out of thin air." Yes, it technically is just a home
+server but it is going to run infrastructure as a service (IaaS) type tools to allow me to easily provision new virtual infrastructure. For instance, a home
+server might have a hard drive for storage. I want to abstract this a bit so that I can create new "virtual hard drives" like with Amazon S3.
+
+## Why would you do this?
+
+I should be clear there is no practical benefit here. Anything I build will still be limited by the physical infrastructure and whatever I do on this
+local cloud could be done more reliably using any standard cloud provider. Likely it would be cheaper too for small usecases. However, I like playing
+around with servers and this seems like a fun way to find a whole host of technical challenges for me to tackle. While I am starting with this big idea
+of "AWS but on my lil' server" it is actually more an exploration in various lower level technical concepts I do not get to see most of the time.
+Really it is just a hobby. I like computers.
+
+## What will it look like?
+
+Honestly, I do not really know. I am certain it is going to change as I develop but I hope to write about it as I go so everyone can
+learn. The image in my head right now is a bunch of Raspberry Pis running a Kubernetes cluster. Then each cloud service would be treated as a
+microservice within the Kubernetes cluster that I can interact with from some frontend (likely command line to start off).
+
+At a high level my initial tasks are:
+
+1. Getting all the Raspberry Pis to chat with each other
+1. Building the multi-node Kubernetes cluster
+1. Emulate Amazon S3
+1. Emulate AWS Lambda
+1. Emulate Amazon DynamoDB
+
+I am almost certain to get immediately sidetracked because something else catches my interest (for instance, just learning more about Linux) but
+I like the idea of a lofty goal to set up initial paths for exploration. Just do not get your hopes up to ever see a "complete project."
+
+## Guiding Principles
+
+There are a couple key ideas that I want to follow while building this out. Some because of lack of resources but others because it seems like a good
+way to learn or a fun challenge.
+
+1. Keep everything lightweight. This is because I am using Raspberry Pis as my hardware. They are not very strong if you get the cheap ones.
+1. Only open-source. This is to save money and also because I think this would be a fun way to get more involved in the open-source community.
+1. Avoid manual configuration. Once I am past getting the Raspberry Pis talking to one another I want to automate this as much as possible. This is
+   mostly an excuse to learn [Ansible](https://www.ansible.com/) and get better at DevSecOps.
+1. Build for resilience. While they are not strong I do have several Raspberry Pis so I can build for resiliency. This is mostly an excuse to learn
+   more about [chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering).
+1. Just have fun with it. I often get overwhelmed whenever I start a project and then end up losing focus. With this project I am assuming
+   I will lose focus but as long as I am building and enjoying myself it is fine.
+
+Anyways, let's see what this turns into. I hope to post as I am building discussing different design decisions, challenges, and whatever else I find
+interesting. Wish me luck 😊

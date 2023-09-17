@@ -1,5 +1,6 @@
 <h1 align="center">
   Personal Website Git Repository
+</h1>
 
 <p align="center">
   This is my personal portfolio blog hosted <a href="https://davidkocen.com/" target="_blank">here</a> built with <a href="https://nextjs.org/" target="_blank">Next.js</a>, <a href="https://tailwindcss.com/" target="_blank">Tailwind CSS</a> and hosted with <a href="https://aws.amazon.com/amplify/" target="_blank">AWS Amplify</a>.
@@ -33,7 +34,3 @@
 ├── 📝 tailwind.config.js     # Contains tailwind stylesheet to change the look
 └── 📝 next.config.js         # configuration related to Next.js
 ```
-
-## 📊 Google Lighthouse Performance Metrics
-
-![Google Lighthouse Performance Metrics](https://github.com/pycoder2000/blog/raw/master/public/static/images/Google%20Lighthouse%20Performance%20Metrics.png)

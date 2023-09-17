@@ -18,13 +18,11 @@ const Experience = ({
         <span className="text-gray-500 dark:text-gray-400">{title}</span>{' '}
         <span className="text-gray-500 dark:text-gray-400">&nbsp;@&nbsp;</span>{' '}
         <span className="text-primary-color-500">
-          <Link href={url} className="company">
-            {company}
-          </Link>
+          <Link href={url}>{company}</Link>
         </span>
       </div>
       <div>
-        <div className="p-1 font-mono text-sm text-gray-400 dark:text-gray-600">{range}</div>
+        <div className="p-1 font-mono text-sm text-gray-600 dark:text-gray-200">{range}</div>
         <div className="p-2">
           <div className="flex flex-row ">
             <div className="mr-2 text-lg text-primary-color-500"> &#8227;</div>
