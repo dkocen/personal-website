@@ -32,7 +32,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
         authorDetails={authorDetails}
         {...frontMatter}
       />
-      <ScrollTopAndComment />
+      <ScrollTopAndComment lyketId={slug} />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
           <header className="pt-6 xl:pb-5">

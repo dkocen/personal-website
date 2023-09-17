@@ -15,7 +15,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
   return (
     <SectionContainer>
       <BlogSEO url={`${siteMetadata.siteUrl}/snippets/${frontMatter.slug}`} {...frontMatter} />
-      <ScrollTopAndComment />
+      <ScrollTopAndComment lyketId={slug} />
       <article>
         <div className="mx-auto max-w-3xl">
           <header>
