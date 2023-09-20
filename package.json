@@ -1,11 +1,11 @@
 {
-  "name": "parth-desai-blog",
-  "version": "1.5.6",
+  "name": "david-kocen-blog",
+  "version": "1.0",
   "private": true,
   "author": {
-    "name": "Parth Desai",
-    "email": "desaiparth2000@gmail.com",
-    "url": "https://musing.vercel.app/"
+    "name": "David Kocen",
+    "email": "dkocen0@gmail.com",
+    "url": "https://www.davidkocen.com"
   },
   "scripts": {
     "start": "cross-env SOCKET=true node ./scripts/next-remote-watch.js ./data",
