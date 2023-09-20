@@ -3,7 +3,7 @@ import { ClapButton } from '@lyket/react'
 import ScrollTop from '@/components/ScrollTop'
 
 const ScrollTopAndComment = (props) => {
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(true)
 
   useEffect(() => {
     const handleWindowScroll = () => {
@@ -17,14 +17,16 @@ const ScrollTopAndComment = (props) => {
 
   return (
     <>
-      <div
-        className={`fixed right-8 bottom-9 hidden flex-col gap-6 ${show ? 'md:flex' : 'md:hidden'}`}
-      >
+      <div className={`fixed right-8 bottom-9 hidden flex-col gap-6 md:flex`}>
         <button className="mb-16">
           <ClapButton id={props.lyketId} namespace="post" hideCounterIfLessThan={1} />
         </button>
       </div>
-      <ScrollTop />
+      <div
+        className={`fixed right-8 bottom-9 hidden flex-col gap-6 ${show ? 'md:flex' : 'md:hidden'}`}
+      >
+        <ScrollTop />
+      </div>
     </>
   )
 }
