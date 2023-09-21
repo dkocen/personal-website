@@ -203,10 +203,10 @@ export default function Now(currentlyReading) {
           <p>
             I'm always trying to learn more. Currently learing to{' '}
             <Link
-              href={'https://www.linuxfromscratch.org/'}
+              href={'https://www.ansible.com/'}
               className="special-underline no-underline dark:text-gray-100 hover:dark:text-gray-100"
             >
-              roll my own Linux distro
+              use Ansible
             </Link>
             .
           </p>
