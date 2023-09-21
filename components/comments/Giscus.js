@@ -6,13 +6,10 @@ import siteMetadata from '@/data/siteMetadata'
 const Giscus = () => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true)
   const { theme, resolvedTheme } = useTheme()
-  const commentsTheme =
-    siteMetadata.comment.giscusConfig.themeURL === ''
-      ? theme === 'dark' || resolvedTheme === 'dark'
-        ? siteMetadata.comment.giscusConfig.darkTheme
-        : siteMetadata.comment.giscusConfig.theme
-      : siteMetadata.comment.giscusConfig.themeURL
-
+  let commentsTheme = siteMetadata.comment.giscusConfig.theme
+  if (theme == 'dark' || resolvedTheme == 'dark') {
+    commentsTheme = siteMetadata?.comment?.giscusConfig?.darkTheme
+  }
   const COMMENTS_ID = 'comments-container'
 
   const LoadComments = useCallback(() => {
@@ -28,7 +25,7 @@ const Giscus = () => {
       metadata,
       inputPosition,
       lang,
-    } = siteMetadata?.comment?.giscusConfig
+    } = siteMetadata.comment.giscusConfig
 
     const script = document.createElement('script')
     script.src = 'https://giscus.app/client.js'
