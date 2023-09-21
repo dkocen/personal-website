@@ -20,7 +20,7 @@ import {
 
 export const getServerSideProps = async () => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/3.0/onecall?lat=47.6062&lon=-122.3321&units=imperial&appid=${process.env.OPENWEATHER_API_KEY}`
+    `https://api.openweathermap.org/data/3.0/onecall?lat=47.6062&lon=-122.3321&units=imperial&appid=${process.env.API_KEY_OPENWEATHER}`
   )
   const data = await response.json()
 

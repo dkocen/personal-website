@@ -8,12 +8,12 @@ export default NextAuth({
   },
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_OAUTH_CLIENT_KEY,
-      clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
+      clientId: process.env.NEXTAUTH_GITHUB_OAUTH_CLIENT_KEY,
+      clientSecret: process.env.NEXTAUTH_URL_GITHUB_OAUTH_CLIENT_SECRET,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.NEXTAUTH_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXTAUTH_GOOGLE_CLIENT_SECRET,
     }),
   ],
 })
