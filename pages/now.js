@@ -109,7 +109,7 @@ export default function Now(currentlyReading) {
   else if (age.years > 0 && age.months == 0 && age.days > 0)
     ageString = age.years + ' years, and' + age.days + ' days old'
   else if (age.years == 0 && age.months > 0 && age.days == 0) ageString = age.months + ' months old'
-  else ageString = "Welcome to Earth! <br> It's first day on Earth!"
+  else ageString = "Welcome to Earth! <br> It's your first day on Earth!"
 
   return (
     <>
@@ -122,7 +122,7 @@ export default function Now(currentlyReading) {
         {/* Misc */}
         <div>
           <div className="flex justify-between gap-10">
-            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+            <div className="mb-10 mt-2 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
               <span className="ml-2 font-semibold">Location:</span> <span>Seattle, WA</span>
               <br />
               <span className="ml-2 font-semibold">Weather:</span>{' '}
@@ -140,26 +140,27 @@ export default function Now(currentlyReading) {
               </span>
             </div>
 
-            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
-              <span className="ml-2 font-semibold">Age:</span> <span>{ageString}</span>
+            <div className="mb-10 mt-2 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+              <span className="ml-2 font-semibold">Age:</span>{' '}
+              <span suppressHydrationWarning>{ageString}</span>
               <br />
               <span className="ml-2 font-semibold">Pronouns:</span> <span>He/They</span>
             </div>
           </div>
 
           <div className="-my-6 flex justify-between gap-10">
-            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+            <div className="mb-10 mt-2 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
               <span className="ml-2 font-semibold">Date:</span>{' '}
-              <span>{TodayDate.format('MM/DD/YYYY')}</span>
+              <span suppressHydrationWarning>{TodayDate.format('MM/DD/YYYY')}</span>
               <br />
               <span className="ml-2 font-semibold">Time:</span>{' '}
-              <span>
+              <span suppressHydrationWarning>
                 <BsClock className="mb-0.5 inline h-3 w-3 hover:animate-spin" />{' '}
                 {TodayDate.format('h:mm:ss A z')}
               </span>
             </div>
 
-            <div className="mt-2 mb-10 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
+            <div className="mb-10 mt-2 w-1/2 rounded-md border border-gray-600 p-1 text-sm dark:border-gray-200">
               <span className="ml-2 font-semibold">Hobbies:</span>{' '}
               <span>Cello, CrossFit, Snowboarding</span>
               <br />

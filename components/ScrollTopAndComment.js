@@ -17,13 +17,11 @@ const ScrollTopAndComment = (props) => {
 
   return (
     <>
-      <div className={`fixed right-8 bottom-9 hidden flex-col gap-6 md:flex`}>
-        <button className="mb-16">
-          <ClapButton id={props.lyketId} namespace="post" hideCounterIfLessThan={1} />
-        </button>
+      <div className={`fixed bottom-9 right-8 mb-16 hidden flex-col gap-6 md:flex`}>
+        <ClapButton id={props.lyketId} namespace="post" hideCounterIfLessThan={1} />
       </div>
       <div
-        className={`fixed right-8 bottom-9 hidden flex-col gap-6 ${show ? 'md:flex' : 'md:hidden'}`}
+        className={`fixed bottom-9 right-8 hidden flex-col gap-6 ${show ? 'md:flex' : 'md:hidden'}`}
       >
         <ScrollTop />
       </div>
