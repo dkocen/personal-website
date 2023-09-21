@@ -14,9 +14,22 @@ export const MDXComponents = {
   a: Link,
   pre: Pre,
   wrapper: ({ components, layout, ...rest }) => {
-    const Layout = import(`../layouts/${layout}`).default
-    return <PostLayout {...rest} />
+    const Layout = getLayoutComponent(layout)
+    return <Layout {...rest} />
   },
+}
+
+export const getLayoutComponent = (layout) => {
+  switch (layout) {
+    case 'PostLayout':
+      return PostLayout
+    case 'AuthorLayout':
+      return AuthorLayout
+    case 'ListLayout':
+      return ListLayout
+    default:
+      return PostLayout
+  }
 }
 
 export const MDXLayoutRenderer = ({ layout, mdxSource, ...rest }) => {

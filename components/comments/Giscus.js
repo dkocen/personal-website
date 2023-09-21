@@ -8,7 +8,7 @@ const Giscus = () => {
   const { theme, resolvedTheme } = useTheme()
   let commentsTheme = siteMetadata.comment.giscusConfig.theme
   if (theme == 'dark' || resolvedTheme == 'dark') {
-    commentsTheme = siteMetadata?.comment?.giscusConfig?.darkTheme
+    commentsTheme = siteMetadata.comment.giscusConfig.darkTheme
   }
   const COMMENTS_ID = 'comments-container'
 

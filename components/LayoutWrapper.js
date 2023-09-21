@@ -21,7 +21,10 @@ const LayoutWrapper = ({ children }) => {
         <header className="flex items-center justify-between py-10">
           <div>
             <Link href="/" aria-label={siteMetadata.headerTitle}>
-              <div className="text-primary-color dark:text-primary-color-dark flex items-center justify-between text-xl font-semibold">
+              <div
+                suppressHydrationWarning
+                className="text-primary-color dark:text-primary-color-dark flex items-center justify-between text-xl font-semibold"
+              >
                 {`~${router.asPath}`}{' '}
                 <Typewriter
                   options={{
