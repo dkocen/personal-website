@@ -104,7 +104,6 @@ class MyDocument extends Document {
           />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
           <meta
             name="google-site-verification"
             content="_Ba0lKk4Dl9XMvABJ9gZEtoMPITT5Vr5TGx2M-34Z_I"
