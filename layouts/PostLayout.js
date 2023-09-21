@@ -23,7 +23,7 @@ const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
-  const { slug, fileName, date, title, images, tags, readingTime } = frontMatter
+  const { slug, fileName, date, title, images, tags, wordCount, timeToRead } = frontMatter
   const postUrl = `${siteMetadata.siteUrl}/blog/${slug}`
   return (
     <SectionContainer>
@@ -54,11 +54,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               <div className="flex justify-center gap-5 py-4">
                 <span className="flex items-center gap-1.5">
                   <HiOutlinePencil className="h-5 w-5" />
-                  {readingTime.words} words
+                  {wordCount} words
                 </span>
                 <span className="flex items-center gap-1.5">
                   <HiOutlineClock className="h-5 w-5" />
-                  {readingTime.text}
+                  {timeToRead}
                 </span>
               </div>
             </div>

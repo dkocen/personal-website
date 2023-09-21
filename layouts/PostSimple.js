@@ -10,7 +10,7 @@ import { HiOutlinePencil, HiOutlineClock, HiOutlineEye } from 'react-icons/hi'
 import { BsCalendarDate } from 'react-icons/bs'
 
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
-  const { slug, date, title, summary, readingTime } = frontMatter
+  const { slug, date, title, summary, wordCount, timeToRead } = frontMatter
 
   return (
     <SectionContainer>
@@ -25,7 +25,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
-                      <BsCalendarDate className="mr-1 -mt-1 inline h-4 w-4" /> {formatDate(date)}
+                      <BsCalendarDate className="-mt-1 mr-1 inline h-4 w-4" /> {formatDate(date)}
                     </time>
                   </dd>
                 </div>
@@ -36,11 +36,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               <div className="flex justify-center gap-5 py-4">
                 <span className="flex items-center gap-1.5">
                   <HiOutlinePencil className="h-5 w-5" />
-                  {readingTime.words} words
+                  {wordCount} words
                 </span>
                 <span className="flex items-center gap-1.5">
                   <HiOutlineClock className="h-5 w-5" />
-                  {readingTime.text}
+                  {timeToRead}
                 </span>
               </div>
             </div>
@@ -50,7 +50,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
+              <div className="b-8 prose max-w-none pt-10 dark:prose-dark">{children}</div>
             </div>
             <Comments frontMatter={frontMatter} />
             <footer>
