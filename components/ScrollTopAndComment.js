@@ -17,7 +17,7 @@ const ScrollTopAndComment = (props) => {
 
   return (
     <>
-      <div className={`fixed bottom-9 right-8 mb-16 hidden flex-col gap-6 md:flex`}>
+      <div className={`fixed bottom-9 right-8 mb-16 flex-col gap-6 md:flex`}>
         <ClapButton id={props.lyketId} namespace="post" hideCounterIfLessThan={1} />
       </div>
       <div

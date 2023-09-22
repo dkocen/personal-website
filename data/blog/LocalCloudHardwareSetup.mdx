@@ -1,0 +1,55 @@
+---
+title: 'Local Cloud: Hardware Setup'
+date: '2023-09-22'
+tags: [local cloud, server, raspberry pi]
+draft: false
+summary: To build a local cloud we first need some hardware. This post covers the hardware decisions made and costs.
+wordCount: 581
+timeToRead: 3 minute read
+---
+
+_This is part of an ongoing series. Read the introductory post [here](/blog/LocalCloudIntroduction)!_
+
+This post will cover the first step of acquiring and building hardware. Posts on the other setup steps can be found below: - [Initial server OS setup](/blog/LocalCloudServerSetup): To be written - [Configure remote access](/blog/LocalCloudRemoteAccess): To be written
+
+<img
+  className="inline"
+  src="https://lh3.googleusercontent.com/pw/AIL4fc9xEuvtc03T4yFyRPBMmCYDa2oXWbpnKGVXJpb3x__iOiN1FJy1TxcEUJe3BLtu3pPDJwDcqzYW5IPi95qYta5QRVkH8IDCBnNR7VuIr6zBx4--bc9K=w2400"
+  alt="Raspberry Pi server on desk"
+/>
+
+# Hardware Setup
+
+Going in, I knew physical infrastructure would be the most expensive part of the whole project. Since I plan on using open source software I am also hoping this will be the **only** expense. Looking to do this relatively cheap I focused mostly on buying pre-owned parts.
+
+## Servers
+
+There was no need to get fancy here. My initial thought was to buy a couple pre-owned, outdated computers and use them. However, I live in a small apartment so space is an issue. The idea of having a couple small computers constantly running in the corner of my room just seemed annoying. Also I was worried about power consumption especially with older PCs. Since I planned to automate as much as possible I did not need a lot of connectability to these things in terms of ports. Really so long as it could run Linux and had a network connection I was good to go.
+
+The concerns about price, size, and power efficiency led me pretty naturally to using Raspberry Pis. On Facebook Marketplace I found some [Raspberry Pi 3A+](https://www.raspberrypi.com/products/raspberry-pi-3-model-a-plus/) for $25 a piece. The person had 30 of them to sell so I picked up 6. This should give me more than enough servers to mess around with while also having one or two left over for separate projects or isolated tests.
+
+My one major worry is the 3A+ model only has 512mb of RAM which seems small but I am going to treat it as a fun constraint and hope for the best.
+
+I did not want these just sprawled out on my desk so I also grabbed the [world's cutest server rack](https://www.amazon.com/gp/product/B085XTDDKD/) for $20.
+
+**Cost: $170**
+
+## Storage
+
+Each of these servers would need to have their own storage device attached for hosting the operating system, running software, and storing local configuration files. Raspbery Pi 3A+ models have a microSD card slot. These SDs are not for long-term file storage so my main concern was having just enough space to run tools like Docker.
+
+I was hoping to pick these up used at a [local computer shop](https://www.greenpcwa.com/) but they only had larger 64 and 128GB microSDs. Instead I went to Amazon and grabbed 6 cheap 32GB cards at $12 for a set of 3.
+
+Additionally, I would need a hard-drive for long-term file storage. This I was able to find at the computer shop so grabbed a used 256GB SSD and external case. Unfortunately I threw out the receipt but I think the SSD was ~$20 and the case was ~$15.
+
+**Cost: ~$59**
+
+## Power
+
+Last, and least interesting, is power. Each Raspberry Pi needs a microUSB cord to be powered. At the computer shop I got these for $4 a piece. I also grabbed a USB charging hub there for ~$20 that has individual power buttons for each slot similar to [this hub](https://www.amazon.com/atolla-Charging-Splitter-Individual-Switches/dp/B083XTKV8V/).
+
+**Cost: ~$44**
+
+## Total Cost: ~$273
+
+The actual construction of all this was rather uneventful. It was exactly as you would expect. I screwed together the rack and plugged in some cords. The more fun stuff comes with software so keep an eye out for the next post covering the [initial server OS setup](/blog/LocalCloudServerSetup)!
