@@ -13,6 +13,7 @@ import {
   RxPerson,
   RxArchive,
   RxRocket,
+  RxFileText,
 } from 'react-icons/rx'
 import MenuItem from './MenuItem'
 
@@ -57,6 +58,7 @@ export default function DropMenu() {
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-zinc-300 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-zinc-700 dark:bg-zinc-800 ">
           <MenuItem title="Home" icon={<RxHome className="mr-4 mt-0.5" />} path={'/'} />
+          <MenuItem title="Blog" icon={<RxFileText className="mr-4 mt-0.5" />} path={'/blog'} />
           <MenuItem
             title="Projects"
             icon={<RxArchive className="mr-4 mt-0.5" />}
