@@ -1,11 +1,117 @@
 ---
 title: 'Local Cloud: Server Setup'
-date: '2023-09-22'
+date: '2023-09-23'
 tags: [local cloud, server, raspberry pi, linux, alpine]
 draft: true
 summary: This post covers setting up the operating system for the Raspbery Pi servers.
-wordCount: 581
-timeToRead: 3 minute read
+wordCount:
+timeToRead:
 ---
 
-aserawesr
+Thank you [TomCore](https://tomcore.io/docs/howto/raspberrypi/install-alpine-linux-on-raspberrypi/). My instructions are a modification of this one
+
+## Partition SD card and prep OS
+
+This is done on a host computer. I am running Ubuntu
+
+1. Insert SD card and list available partitions with (using parted program)
+
+```
+sudo parted -l
+```
+
+1. Open disk in parted
+
+```
+sudo parted /dev/mmcblk0
+```
+
+1. Create boot, system, and swap partitions
+
+```
+mkpart primary fat32 1MB 256MB // Note don't call it boot.
+mkpart primary linux-swap 256MB 4256MB
+mkpart primar ext4 4256 100%
+```
+
+1. Exit parted and format partitions
+
+```
+sudo mkfs -t fat /dev/mmcblk0p1
+sudo mkswap /dev/mmcblk0p2
+sudo mkfs -t ext4 /dev/mmcblk0p3
+```
+
+1. Check to see where partitions were mounts
+
+```
+df
+```
+
+1. Download and unpack Alpine Linux for Raspberry Pi aarch64 into boot partition
+
+```
+wget https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/aarch64/alpine-rpi-3.18.3-aarch64.tar.gz
+
+tar -xzf alpine-rpi-3.18.3-aarch64.tar.gz -C /media/dkocen/7CAA-4DB3/ BOOT PARTITION PATH
+```
+
+1. Eject the disk when it finishes copying.
+
+## Boot and Configure Alpine
+
+There are several ways to run Alpine Linux. We want it done in the boot partition instead of RAM
+
+1. Put the microSD into the Raspberry Pi and power it on
+
+1. Log in using `root` and leave password empty
+
+1. Run `setup-alpine`
+1. Choose keyboard layout
+
+```
+us
+us
+```
+
+1. Stick with default hostname `localhost`
+
+1. Should detect wifi router called something like wlan0. Choose to initalize it and log into wifi network. Choose `dhcp` fSor IP address and `n` for other configurations
+
+1. Set password and timezone
+1. No HTTP proxy and use chrony for NTP client (just default)
+   1, Select which mirror you want to use. I just let it detect fastest using 'f' but this does take a moment
+1. Create a user
+1. Don't set an ssh key for now but use openssh
+1. Don't try boot media, stick with default for config store and apk cache
+
+## Install Alpine to partition
+
+Once the script finishes we need to install it to our disk
+
+1. Mount system partition and enable swap upon booting
+
+```
+apk add e2fsprogs
+mount /dev/mmcblk0p3 /mnt
+swapon /dev/mmcblk0p2
+rc-update add swap boot
+```
+
+1. Run setup
+
+```
+export FORCE_BOOTFS=1
+export SWAP_DEVICES=/dev/mmcblk0p2
+setup-disk /mnt
+```
+
+1. Remount, cleanup, and copy all files over to boot partition
+
+```
+mount -o remount,rw /dev/mmcblk0p1
+rm /media/mmcblk0p1/* -r
+cp -r /mnt/boot/* /media/mmcblk0p1/
+```
+
+1. Reboot and hope for the best! It should autoconnect to your wifi and get assigned an IP address
