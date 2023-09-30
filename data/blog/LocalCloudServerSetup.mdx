@@ -1,117 +1,179 @@
 ---
-title: 'Local Cloud: Server Setup'
+title: 'Local Cloud: Setting up Alpine Linux'
 date: '2023-09-23'
 tags: [local cloud, server, raspberry pi, linux, alpine]
-draft: true
-summary: This post covers setting up the operating system for the Raspbery Pi servers.
-wordCount:
-timeToRead:
+draft: false
+summary: This post covers setting up Alpine Linux on our Raspberry Pi servers.
+wordCount: 1506
+timeToRead: 8 minute read
 ---
 
-Thank you [TomCore](https://tomcore.io/docs/howto/raspberrypi/install-alpine-linux-on-raspberrypi/). My instructions are a modification of this one
+<img
+  className="inline"
+  src="https://pngimg.com/uploads/linux/linux_PNG29.png"
+  alt="Image of Linux penguin"
+/>
+The hardware is acquired, everything is plugged in and turns on, lets actually make it useful. In this
+post I'll be discussing the decision for which OS to use (spoiler: Alpine Linux) and setting it up.
 
-## Partition SD card and prep OS
+Thank you [TomCore](https://tomcore.io/docs/howto/raspberrypi/install-alpine-linux-on-raspberrypi/)! My instructions are a modification of theirs.
 
-This is done on a host computer. I am running Ubuntu
+# OS Considerations
 
-1. Insert SD card and list available partitions with (using parted program)
+I spent a fair bit researching what the best base OS would be to use for our servers. I had some experience using [Ubuntu server](https://ubuntu.com/server/docs) so that was the default. While it probably would have worked alright I wanted to be careful given our limited resources (especially with RAM) and also this is all to learn anyways so lets do something new.
 
-```
-sudo parted -l
-```
+Decision criteria:
 
-1. Open disk in parted
+1. **Lightweight**. We do not have a lot of compute resources so the smaller and less compute intensive the better.
+1. **Secure**. I still plan on playing around with security stuff using this project so having something secure by default will give me a good base to work from.
+1. **Active community**. Truthfully I am not a Linux expert so I needed an online community for support.
 
-```
-sudo parted /dev/mmcblk0
-```
+In the end I went with [Alpine Linux](https://www.alpinelinux.org/about/). It met all three criteria above but also had an existing Raspberry Pi ready image. Additionally, Alpine Linux is a very common base image for containers so more experience with it will come in handy when I am working with containers for my job.
 
-1. Create boot, system, and swap partitions
+Runner ups:
 
-```
-mkpart primary fat32 1MB 256MB // Note don't call it boot.
-mkpart primary linux-swap 256MB 4256MB
-mkpart primar ext4 4256 100%
-```
+1. [Tiny Core Linux](http://www.tinycorelinux.net/welcome.html). This OS is even smaller than Alpine. However, it felt a little too barebones for my taste. It is a really cool project but my focus ultimately is to learn more about infrastructure automation not Linux systems so I could use a little more built-in tooling. Also Alpine Linux has a stronger online community.
+1. [Fedora CoreOS](https://fedoraproject.org/en/coreos/?stream=stable). I am hoping the majority of my solution is containerized so having an operating system specifically designed to run containers seemed like a good idea. It is also part of the [Fedora Project](https://www.fedoraproject.org/) which I have never used but I know is popular. I worried a bit about locking myself into having containers for everything though so decided against it.
+1. [Linux From Scratch](https://www.linuxfromscratch.org/). I had about a day of thinking maybe I should just build my own. It would be all mine, I'm sure I would learn a ton, and it would be as minimal as I could get away with. However, I had to remember my focus is on infrastructure automation not Linux. One of these days I hope to come back to this though. Seems like a fun weekend.
 
-1. Exit parted and format partitions
+# Alpine Linux Setup
 
-```
-sudo mkfs -t fat /dev/mmcblk0p1
-sudo mkswap /dev/mmcblk0p2
-sudo mkfs -t ext4 /dev/mmcblk0p3
-```
+Now that the OS is decided lets get things running. Below I will go through all the steps to get Alpine Linux running on a Raspberry Pi 3A+ (though I imagine it is similar across models).
 
-1. Check to see where partitions were mounts
+This setup requires a host computer with an SD card slot. I use Ubuntu so the instructions are Linux specific but similar steps can be done on Windows or MacOS. You will just have to find the equivalent tools.
 
-```
-df
-```
+Terminology:
 
-1. Download and unpack Alpine Linux for Raspberry Pi aarch64 into boot partition
+- **Host computer**: This is just my laptop
+- **Server**: This is the Raspberry Pi
 
-```
-wget https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/aarch64/alpine-rpi-3.18.3-aarch64.tar.gz
+## Partition microSD card and download OS
 
-tar -xzf alpine-rpi-3.18.3-aarch64.tar.gz -C /media/dkocen/7CAA-4DB3/ BOOT PARTITION PATH
-```
+First we need to partition our microSD card into three partitions:
+
+- **Boot**: This partition is where the OS will live and what gets triggered when the server is powered on.
+- **Swap**: This partition is reserved to serve as [swap memory](https://phoenixnap.com/kb/swap-memory). In simple terms swap memory is kind of like reserving some storage to act like additional RAM in case of overflow. We do not have a lot of RAM to work with so this will hopefully help.
+- **System**: This is the partition for everything else. Here is where we will install and run software, store any local files, etc.
+
+I am using a 32GB microSD card so the partition sizes are done with that in mind. You can adjust as you see fit.
+
+1. Insert the SD card and list out the available partitions. This is done using [Parted](https://www.gnu.org/software/parted/manual/parted.html) which you may need to install beforehand. Note the disk name you will be working with. Mine is /dev/mmcblk0.
+
+   ```
+   sudo parted -l
+   ```
+
+   <img
+     className="inline"
+     src="https://lh3.googleusercontent.com/pw/ADCreHdhUUmkSD7KwOXKOEJWzvfhJYWpfNcFvkEKpb45UwB-9hxyG62WsBCi-Aq27zchHQY-eS-0YUcuKe6p_VGBq9z2bogj4DLNMkTZI2JbAbQaG_KPw0jT=w2400"
+     alt="List of available partitions"
+   />
+
+1. Open the disk in Parted and delete any current partitions so we have a clean slate. My disk had one partition on it that I removed.
+
+   ```
+   sudo parted /dev/mmcblk0
+   rm 1
+   ```
+
+1. Still in Parted, create the boot, swap, ad system partitions. Our boot partition is 256MB and will be FAT32. The swap partition is 4GB. Our system partition will just be the rest of the space (hence 100%) and EXT4. You can close Parted afterwards
+
+   ```
+   mkpart primary fat32 1MB 256MB
+   mkpart primary linux-swap 256MB 4256MB
+   mkpart primary ext4 4256 100%
+   quit
+   ```
+
+1. Next format the partitions to use the filesystem we want. By default we can find the partitions in the `/dev` folder in Ubuntu. Each partition should be something like `[Disk Name]p1` or `[Disk Name]p2`. For me the partitions map as so:
+
+   - `/dev/mmcblk0p1`: boot partition formatted as FAT32
+   - `/dev/mmcblk0p2`: swap partition formatted as swap memory (note the `mkswap` command rather than `mkfs`)
+   - `/dev/mmcblk0p3`: system partition formatted as EXT4
+
+   ```
+   sudo mkfs -t fat /dev/mmcblk0p1
+   sudo mkswap /dev/mmcblk0p2
+   sudo mkfs -t ext4 /dev/mmcblk0p3
+   ```
+
+1. Once formatted remove and reinsert the microSD card. If you run the `df` command you should see your boot and system partitions mounted under the `/media` folder.
+
+   <img
+     className="inline"
+     src="https://lh3.googleusercontent.com/pw/ADCreHeMo8Fa6ZzpW9sMEHi3Au-IdrlTrGAMMF4tHr-H7ISft-Xzj6B18GJ2vZuFKVySwJ6dhfAYo1gsKBc5p7JpNcfK2xHQJ6xVOOkeyqP_5JRg7cR1Un_R=w2400"
+     alt="List of available filesystems"
+   />
+
+1. Download and unpack [Alpine Linux for Raspberry Pi aarch64](https://alpinelinux.org/downloads/) onto your boot partition (for me this is `/media/dkocen/7CAA-4DB3`).
+
+   ```
+   wget https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/aarch64/alpine-rpi-3.18.3-aarch64.tar.gz
+
+   tar -xvzf alpine-rpi-3.18.3-aarch64.tar.gz -C /PATH/TO/BOOT/PARTITION
+   ```
 
 1. Eject the disk when it finishes copying.
 
 ## Boot and Configure Alpine
 
-There are several ways to run Alpine Linux. We want it done in the boot partition instead of RAM
+Now that Alpine Linux is on our microSD card we can boot up our Raspberry Pi and start configuring things.
 
-1. Put the microSD into the Raspberry Pi and power it on
+<img
+  className="inline"
+  src="https://lh3.googleusercontent.com/pw/ADCreHesASdJO56PIEo1Tgn7_h0DxctK1A9Q9Xf41nzupxpVHjgDspdkz-ekI9BrCyObTlIYPvaw-Y92mAhVf95aAU6Uo_b3OY1gZ8qDaxjenIyxod0usikW=w2400"
+  alt="Alpine Linux on initial boot"
+/>
 
-1. Log in using `root` and leave password empty
-
+1. Put the microSD into the server and power it on. Make sure you have a monitor and keyboard connected as well.
+1. Log in using `root`. There is no password so just press enter.
 1. Run `setup-alpine`
-1. Choose keyboard layout
+1. Set your keyboard layout.
+1. Give the server a unique hostname. This will be useful later when we are trying to setup SSH. I went with `davidcloud0`, `davidcloud1`, etc
+1. The setup script should automatically detect a wifi network called something like `wlan0`. Choose to initalize it and log into your wifi network.
+1. Select `dhcp` for the IP address and `n` for other configurations.
 
-```
-us
-us
-```
-
-1. Stick with default hostname `localhost`
-
-1. Should detect wifi router called something like wlan0. Choose to initalize it and log into wifi network. Choose `dhcp` fSor IP address and `n` for other configurations
+   - Note that using DHCP will dynamically assign an IP address to your server each time it is booted. You could assign a static IP address but I thought this would force me to learn a little more about DNS when I get to connecting remotely. The plan is to always be able to connect via the devices name rather than a specific IP address.
 
 1. Set password and timezone
-1. No HTTP proxy and use chrony for NTP client (just default)
-   1, Select which mirror you want to use. I just let it detect fastest using 'f' but this does take a moment
-1. Create a user
-1. Don't set an ssh key for now but use openssh
-1. Don't try boot media, stick with default for config store and apk cache
+1. Do not set up an HTTP proxy and stick with Chrony for the NTP client (this should be the default).
+1. Select which mirror you want to use for downloading packages. I just let it detect the fastest using by typing `f` but this does take a moment
+1. Create a user. It is bad practice to always use `root` so this will be our main admin user.
+1. Don't set an SSH key for now but use OpenSSH.
+1. Don't try to boot media and just stick with the defaults for everything else (config store, apk cache, etc).
 
-## Install Alpine to partition
+## Install Alpine to boot partition and enable swap
 
-Once the script finishes we need to install it to our disk
+Great! Once the script finishes we have successfully configured our Alpine Linux setup. Now we just need to install the configured version to our boot partition so that all this is not lost when we restart the server.
 
-1. Mount system partition and enable swap upon booting
+Note that it is possible to run Alpine Linux entirely within RAM (super speedy) but we have limited RAM so will be taking the more traditional route of running it from the microSD card. See the [Alpine Linux installation wiki](https://wiki.alpinelinux.org/wiki/Installation) for more information about the different ways we can install Alpine Linux.
 
-```
-apk add e2fsprogs
-mount /dev/mmcblk0p3 /mnt
-swapon /dev/mmcblk0p2
-rc-update add swap boot
-```
+1. Mount the system partition as `/mnt` and enable swap upon booting
 
-1. Run setup
+   ```
+   mount /dev/mmcblk0p3 /mnt
+   swapon /dev/mmcblk0p2
+   rc-update add swap boot
+   ```
 
-```
-export FORCE_BOOTFS=1
-export SWAP_DEVICES=/dev/mmcblk0p2
-setup-disk /mnt
-```
+1. Run the `setup-disk` script to install Alpine Linux into our system partition. We want to do it in the system partition first so that there is enough space for temporary installation files. Afterwards we will move the final setup to our boot partition.
 
-1. Remount, cleanup, and copy all files over to boot partition
+   ```
+   export FORCE_BOOTFS=1 # This lets us use a non-FAT32 partition
+   export SWAP_DEVICES=/dev/mmcblk0p2 # Our swap partition
+   setup-disk /mnt
+   ```
 
-```
-mount -o remount,rw /dev/mmcblk0p1
-rm /media/mmcblk0p1/* -r
-cp -r /mnt/boot/* /media/mmcblk0p1/
-```
+1. Remount the boot partition making it read and writeable, remove any existing files, and copy over our new boot files containing the fully configured Alpine Linux installation.
 
-1. Reboot and hope for the best! It should autoconnect to your wifi and get assigned an IP address
+   ```
+   mount -o remount,rw /dev/mmcblk0p1
+   rm /media/mmcblk0p1/* -r
+   cp -r /mnt/boot/* /media/mmcblk0p1/
+   ```
+
+1. Reboot and hope for the best! It should autoconnect to your wifi and have all the settings we configured earlier.
+
+## Conclusion
+
+That's it. After the reboot you should have a fully operational Raspberry Pi with Alpine Linux running. Next up is enabling remote connection via SSH so we can just do all future actions from a laptop.

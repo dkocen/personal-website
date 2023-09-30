@@ -28,20 +28,8 @@ export default function Home({ posts }) {
               {`Welcome to ${siteMetadata.description}. I am a DevSecOps Engineer passionate about security and improving software operations. In my free time, I like to snowboard, play the cello, and try my best at CrossFit.`}
             </h2>
             <p className="pt-5 text-lg leading-7 text-slate-600 dark:text-slate-300 sm:block md:hidden lg:hidden">
-              This is my place to{' '}
-              <RoughNotation
-                animate="true"
-                type="box"
-                show={true}
-                color="#DE1D8D"
-                animationDelay={1000}
-                animationDuration={2500}
-                className="text-slate-200"
-              >
-                showcase my work and share my thoughts&nbsp;
-              </RoughNotation>
-              . I'm hoping having a fun place to do this will help me become more creative. I hope
-              you like it!
+              This is my place to showcase my work and share my thoughts. I'm hoping having a fun
+              place to do this will help me become more creative. I hope you like it!
             </p>
             <p className="hidden pt-10 text-lg leading-7 text-slate-600 dark:text-slate-300 md:block">
               This is my place to{' '}

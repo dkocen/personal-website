@@ -8,4 +8,50 @@ wordCount:
 timeToRead:
 ---
 
-asdfasdf
+## SSH Access
+
+During our installation we chose to use openssh so will be using that to set it up. For more details checkout [Ubuntu OpenSSH Server](https://ubuntu.com/server/docs/service-openssh)
+
+1. From where you will be remote connecting generate a new ssh key with `ssh-keygen -t rsa`. Give it a unique name for the machine it will be used on. Set a password if you want. I recommend it just for good security practices.
+
+1. Move the private key (the one not ending in .pub) to your ssh folder (default for me is ~/.ssh).
+
+1. Copy the public key onto the server as `~/.ssh/authorized_keys`. Make the folder if it doesn't exist.
+
+1. Log into the server and install openssh-server `apk add openssh-server`
+
+1. Set authroized_keys file permission with `chmod 644 .ssh/authorized_keys`
+
+We want to be able to ssh via [username]@[hostname] since the IP address is dynamically assigned at startup with DHCP. To do this we will setup mDNS
+
+1. Install `avahi` with `apk add avahi`
+
+1. Set avahi-daemon to start on boot (`rc-update add avahi-daemon`)
+
+1. Restart services by running `openrc`
+
+1. See if being broadcasted by going to laptop and running "avahi-browse --all"
+
+1. Should now be able to connect via `ssh [username]@[hostname].local`. If this fails with a "Too many authentication failures" error just continue the step below and try again.
+
+Because we will be adding one SSH key per server we want to configure the SSH client to first try to login with the key we know will work (by default it tries all keys in .ssh but this can lead to a "Too many authentication failures"). To fix this we want to create an ssh config file on the laptop
+
+1. Create `~/.ssh/config`
+1. For each host create an entry like so
+
+```
+Host [hostname]
+  HostName [hostname].local
+  User [username]
+  IdentityFile /PATH/TO/PRIVATE/KEY
+```
+
+1. Add the follow entry to apply to all hosts:
+
+```
+Host *
+  IdentitiesOnly yes
+  Port 22
+```
+
+We can now connect via the hostname. To test run `ssh hostname`. If you get an error try it with the `-v` flag to see what might be going wrong.
