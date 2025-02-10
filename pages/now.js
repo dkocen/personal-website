@@ -171,7 +171,9 @@ export default function Now(currentlyReading) {
                 rel="noopener noreferrer"
                 className="underline-offset-1 hover:underline"
               >
-                <span>Nexus: A Brief History of Information Networks</span> by <span>Yuval Noah Harari</span>
+                <span>Nexus: A Brief History of Information Networks</span>
+                {' by '}
+                <span>Yuval Noah Harari</span>
               </a>
               <br />
             </div>
@@ -196,12 +198,12 @@ export default function Now(currentlyReading) {
           <p>I mostly use AWS and TypeScript. Also been playing a lot with Kubernetes recently.</p>
           <br />
           <p>
-            I am just starting off my job at PNNL and also pursuing a Master's in
-            Cybersecurity from UC Berkeley
+            I am just starting off my job at PNNL and also pursuing a Master's in Cybersecurity from
+            UC Berkeley
           </p>
           <br />
           <p>
-            I'm always trying to learn more. Currently learning {' '}
+            I'm always trying to learn more. Currently learning{' '}
             <Link
               href={'https://craftinginterpreters.com/'}
               className="special-underline no-underline dark:text-gray-100 hover:dark:text-gray-100"
