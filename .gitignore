@@ -23,6 +23,7 @@ public/sitemap.xml
 
 # misc
 .DS_Store
+.vscode
 
 # debug
 *.log

@@ -34,3 +34,50 @@
 ├── 📝 tailwind.config.js     # Contains tailwind stylesheet to change the look
 └── 📝 next.config.js         # configuration related to Next.js
 ```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- Node.js (>=14.x)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/personal-website.git
+    cd personal-website
+    ```
+
+2. Install dependencies:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+### Running the Development Server
+
+Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 📦 Deployment
+
+This project is hosted using AWS Amplify. Follow the [AWS Amplify documentation](https://docs.aws.amazon.com/amplify/latest/userguide/getting-started.html) to deploy your own version.
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## 🙏 Acknowledgements
+
+Special thanks to:
+- [Parth Desai](https://github.com/pycoder2000/) for the original template.
+- [Timothy Lin](https://github.com/timlrx) for the Tailwind Next.js starter blog template.
